@@ -5,13 +5,15 @@ using UnityEngine;
 public class Player2 : MonoBehaviour
 {
     [SerializeField]
-    private float moveSpeed = 5f;
+    private float moveSpeed = 8f;
     [SerializeField]
     private float gravity = 9.81f;
     [SerializeField]
-    private float jumpSpeed = 3.5f;
+    private float jumpSpeed = 2.5f;
     [SerializeField]
-    private float doubleJumpMultiplier = 0.5f;
+    private float dashSpeed = 8f;
+    [SerializeField]
+    private float doubleJumpMultiplier = 1f;
     private CharacterController controller;
     private float directionY;
     private bool canDoubleJump = false;
@@ -42,6 +44,9 @@ public class Player2 : MonoBehaviour
                 canDoubleJump = false;
             } else {
                 directionY -= gravity * Time.deltaTime;
+            }
+            if (Input.GetKeyDown(KeyCode.LeftShift)) {
+                controller.Move(direction * dashSpeed);
             }
         }
 

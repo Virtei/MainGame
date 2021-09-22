@@ -1824,6 +1824,7 @@ MonoBehaviour:
   moveSpeed: 8
   gravity: 9.81
   jumpSpeed: 2.5
+  dashSpeed: 8
   doubleJumpMultiplier: 1
 --- !u!1 &1976438990
 GameObject:
