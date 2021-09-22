@@ -40,10 +40,12 @@ public class Player2 : MonoBehaviour
             if (Input.GetButtonDown("Jump") && canDoubleJump) {
                 directionY = jumpSpeed * doubleJumpMultiplier;
                 canDoubleJump = false;
+            } else {
+                directionY -= gravity * Time.deltaTime;
             }
         }
 
-        directionY -= gravity * Time.deltaTime;
+        //directionY -= gravity * Time.deltaTime;
 
         direction.y = directionY;
 
