@@ -19,6 +19,7 @@ public class Player2 : MonoBehaviour
     private CharacterController controller;
     private float directionY;
     private bool canDoubleJump = false;
+    private bool canAirDash = false;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +38,7 @@ public class Player2 : MonoBehaviour
 
         if (controller.isGrounded) {
             canDoubleJump = true;
+            canAirDash = true;
             if (Input.GetButtonDown("Jump")) {
                 directionY = jumpSpeed;
             }
@@ -47,8 +49,9 @@ public class Player2 : MonoBehaviour
             } else {
                 directionY -= gravity * Time.deltaTime;
             }
-            if (Input.GetKeyDown(KeyCode.LeftShift)) {
+            if (Input.GetKeyDown(KeyCode.LeftShift) && canAirDash) {
                 controller.Move(direction * dashSpeed);
+                canAirDash = false;
             }
         }
 
