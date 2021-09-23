@@ -14,6 +14,8 @@ public class Player2 : MonoBehaviour
     private float dashSpeed = 8f;
     [SerializeField]
     private float doubleJumpMultiplier = 1f;
+    [SerializeField]
+    private float slideSpeed = 4f;
     private CharacterController controller;
     private float directionY;
     private bool canDoubleJump = false;
