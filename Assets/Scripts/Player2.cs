@@ -50,26 +50,25 @@ public class Player2 : MonoBehaviour
             if (Input.GetButtonDown("Jump") && canDoubleJump) {
                 directionY = jumpSpeed * doubleJumpMultiplier;
                 canDoubleJump = false;
-            } else if ((Input.GetKeyDown(KeyCode.LeftShift) && canAirDash) || isDashing) {
-                if (Input.GetKeyDown(KeyCode.LeftShift)) {
-                    isDashing = true;
-                }
-                controller.Move(direction * dashSpeed * Time.deltaTime);
-                dashTime += Time.deltaTime;
-                if (dashTime >= maxDashTime) {
-                    dashTime = 0f;
-                    canAirDash = false;
-                    isDashing = false;
-                }
+            } else if (Input.GetKeyDown(KeyCode.LeftShift) && canAirDash) {
+                isDashing = true;
             } else {
                 directionY -= gravity * Time.deltaTime;
             }
         }
 
-        //directionY -= gravity * Time.deltaTime;
+        if (isDashing) {
+            controller.Move(direction * dashSpeed * Time.deltaTime);
+            dashTime += Time.deltaTime;
+            if (dashTime >= maxDashTime) {
+                dashTime = 0f;
+                canAirDash = false;
+                isDashing = false;
+            }
+        } else {
+            direction.y = directionY;
 
-        direction.y = directionY;
-
-        controller.Move(direction * moveSpeed * Time.deltaTime);
+            controller.Move(direction * moveSpeed * Time.deltaTime);
+        }
     }
 }

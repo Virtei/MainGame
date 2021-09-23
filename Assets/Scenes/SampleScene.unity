@@ -2113,7 +2113,7 @@ MonoBehaviour:
   moveSpeed: 8
   gravity: 9.81
   jumpSpeed: 2.5
-  dashSpeed: 8
+  dashSpeed: 16
   maxDashTime: 0.25
   doubleJumpMultiplier: 1
   slideSpeed: 4
