@@ -7,7 +7,6 @@ public class Player3 : MonoBehaviour
     enum State {
         Grounded,
         Jumping,
-
         DoubleJumping,
         Falling,
         Dashing

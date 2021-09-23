@@ -52,6 +52,8 @@ public class Player2 : MonoBehaviour
                 canDoubleJump = false;
             } else if (Input.GetKeyDown(KeyCode.LeftShift) && canAirDash) {
                 isDashing = true;
+            } else if (Input.GetKeyDown(KeyCode.LeftControl)) {
+                directionY -= gravity;
             } else {
                 directionY -= gravity * Time.deltaTime;
             }
