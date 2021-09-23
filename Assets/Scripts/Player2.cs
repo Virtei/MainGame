@@ -13,13 +13,17 @@ public class Player2 : MonoBehaviour
     [SerializeField]
     private float dashSpeed = 8f;
     [SerializeField]
+    private float maxDashTime = 0.5f;
+    [SerializeField]
     private float doubleJumpMultiplier = 1f;
     [SerializeField]
     private float slideSpeed = 4f;
     private CharacterController controller;
     private float directionY;
+    private float dashTime = 0f;
     private bool canDoubleJump = false;
     private bool canAirDash = false;
+    private bool isDashing = false;
 
     // Start is called before the first frame update
     void Start()
@@ -46,12 +50,19 @@ public class Player2 : MonoBehaviour
             if (Input.GetButtonDown("Jump") && canDoubleJump) {
                 directionY = jumpSpeed * doubleJumpMultiplier;
                 canDoubleJump = false;
+            } else if ((Input.GetKeyDown(KeyCode.LeftShift) && canAirDash) || isDashing) {
+                if (Input.GetKeyDown(KeyCode.LeftShift)) {
+                    isDashing = true;
+                }
+                controller.Move(direction * dashSpeed * Time.deltaTime);
+                dashTime += Time.deltaTime;
+                if (dashTime >= maxDashTime) {
+                    dashTime = 0f;
+                    canAirDash = false;
+                    isDashing = false;
+                }
             } else {
                 directionY -= gravity * Time.deltaTime;
-            }
-            if (Input.GetKeyDown(KeyCode.LeftShift) && canAirDash) {
-                controller.Move(direction * dashSpeed);
-                canAirDash = false;
             }
         }
 
