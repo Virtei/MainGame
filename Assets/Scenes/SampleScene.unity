@@ -2115,8 +2115,9 @@ MonoBehaviour:
   jumpSpeed: 2.5
   dashSpeed: 32
   maxDashTime: 0.25
+  maxSlideTime: 0.25
   doubleJumpMultiplier: 1
-  slideSpeed: 4
+  slideSpeed: 32
 --- !u!114 &1912136792
 MonoBehaviour:
   m_ObjectHideFlags: 0
