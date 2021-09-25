@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     public float lookRadius = 10f;
+    public float contactRadius = 1f;
+    private bool hasContacted = false;
     Transform target;
     NavMeshAgent agent;
 
@@ -23,10 +25,18 @@ public class Enemy : MonoBehaviour
         if (distance <= lookRadius) {
             agent.SetDestination(target.position);
         }
+        if (distance <= contactRadius && !hasContacted) {
+            FindObjectOfType<AudioManager>().Play("Death1");
+            hasContacted = true;
+        }
     }
 
     void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, lookRadius);
+    }
+
+    void OnCollisionEnter(Collision collision) {
+        //FindObjectOfType<AudioManager>().Play("Death1");
     }
 }
