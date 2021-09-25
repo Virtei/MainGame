@@ -51,17 +51,22 @@ public class Player2 : MonoBehaviour
             if (Input.GetButtonDown("Jump")) {
                 directionY = jumpSpeed;
                 canSlide = true;
+                FindObjectOfType<AudioManager>().Play("Jump1");
             } else if (Input.GetKeyDown(KeyCode.LeftShift) && canSlide) {
                 isSliding = true;
+                FindObjectOfType<AudioManager>().Play("Slide1");
             }
         } else {
             if (Input.GetButtonDown("Jump") && canDoubleJump) {
                 directionY = jumpSpeed * doubleJumpMultiplier;
                 canDoubleJump = false;
+                FindObjectOfType<AudioManager>().Play("DoubleJump1");
             } else if (Input.GetKeyDown(KeyCode.LeftShift) && canAirDash) {
                 isDashing = true;
+                FindObjectOfType<AudioManager>().Play("AirDash1");
             } else if (Input.GetKeyDown(KeyCode.LeftControl)) {
                 directionY -= gravity;
+                FindObjectOfType<AudioManager>().Play("GroundPound1");
             } else {
                 directionY -= gravity * Time.deltaTime;
             }
