@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player2 : MonoBehaviour
 {
     [SerializeField]
+    public int health = 3;
+    [SerializeField]
     private float moveSpeed = 8f;
     [SerializeField]
     private float gravity = 9.81f;
@@ -92,6 +94,16 @@ public class Player2 : MonoBehaviour
             direction.y = directionY;
 
             controller.Move(direction * moveSpeed * Time.deltaTime);
+        }
+    }
+    
+    public void TakeDamage() {
+        if (health > 0) {
+            health -= 1;
+            Debug.Log("Health = " + health.ToString());
+            GameObject.Find("Health").GetComponent<HealthBar>().UpdateHealth();
+        } else {
+
         }
     }
 }
