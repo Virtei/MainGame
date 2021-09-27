@@ -16,12 +16,6 @@ public class HealthBar : MonoBehaviour
         healthText.text = "Health: " + health.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void UpdateHealth() {
         health = PlayerManager.instance.player.GetComponent<Player2>().health;
         healthText.text = "Health: " + health.ToString();

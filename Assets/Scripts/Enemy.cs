@@ -5,9 +5,14 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public float lookRadius = 10f;
-    public float contactRadius = 1f;
+    [SerializeField]
+    private float lookRadius = 10f;
+    [SerializeField]
+    private float contactRadius = 1f;
     private bool hasContacted = false;
+    [SerializeField]
+    private float invulnerabilityPeriod = 2f;
+    private float timeSinceDamage = 0f;
     Transform target;
     NavMeshAgent agent;
 
@@ -30,11 +35,19 @@ public class Enemy : MonoBehaviour
             hasContacted = true;
             PlayerManager.instance.player.GetComponent<Player2>().TakeDamage();
         }
+        if (hasContacted) {
+            timeSinceDamage += Time.deltaTime;
+            if (timeSinceDamage >= invulnerabilityPeriod) {
+                timeSinceDamage = 0f;
+                hasContacted = false;
+            }
+        }
     }
 
     void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, lookRadius);
+        Gizmos.DrawWireSphere(transform.position, contactRadius);
     }
 
     void OnCollisionEnter(Collision collision) {
