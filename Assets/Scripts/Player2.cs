@@ -44,6 +44,8 @@ public class Player2 : MonoBehaviour
     [SerializeField]
     private float wallDeattachDistance = 1f;
     private float distanceTravelled = 0f;
+    [SerializeField]
+    private float pushSpeed = 5f;
     Vector3[] directions;
     RaycastHit[] hits;
 
@@ -182,5 +184,15 @@ public class Player2 : MonoBehaviour
 
     bool canAttach2() {
         return true;
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit) {
+        if (hit.collider.CompareTag($"MovableObject")) {
+            if (hit.collider.gameObject.GetComponent<Rigidbody>() == null) {
+                return;
+            }
+            Vector3 pushDirection = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+            hit.collider.attachedRigidbody.velocity = pushDirection * pushSpeed;
+        }
     }
 }
