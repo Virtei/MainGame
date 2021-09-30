@@ -5,6 +5,8 @@
 [Bb]uilds/
 [Ll]ogs/
 
+.idea/
+
 Assets/Plugins/GitHub.meta
 Assets/Plugins/Github/
 
