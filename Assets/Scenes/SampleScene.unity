@@ -945,7 +945,7 @@ GameObject:
   - component: {fileID: 513785577}
   m_Layer: 0
   m_Name: Cube (13)
-  m_TagString: Untagged
+  m_TagString: ClimbableObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
@@ -1596,7 +1596,7 @@ GameObject:
   - component: {fileID: 909833608}
   m_Layer: 0
   m_Name: Cube (12)
-  m_TagString: Untagged
+  m_TagString: ClimbableObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8

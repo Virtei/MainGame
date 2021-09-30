@@ -78,7 +78,7 @@ public class Player2 : MonoBehaviour
             for (int i = 0; i < directions.Length; i++) {
                 Vector3 dir = transform.TransformDirection(directions[i]);
                 Physics.Raycast(transform.position, dir, out hits[i], maxWallDistance);
-                if (hits[i].collider != null) {
+                if (hits[i].collider != null && hits[i].collider.CompareTag($"ClimbableObject")) {
                     Debug.DrawRay(transform.position, dir * hits[i].distance, Color.green);
                     canWallClimb = true;
                 } else {
