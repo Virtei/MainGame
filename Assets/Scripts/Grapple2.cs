@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grapple : MonoBehaviour
+public class Grapple2 : MonoBehaviour
 {
     private LineRenderer lineRenderer;
     private Vector3 grapplePoint;
     public LayerMask whatIsGrappleable;
-    public Transform gunTip, camera2, rigidBody, player;
+    public Transform gunTip, camera2, player;
     private float maxDistance = 100f;
-    private SpringJoint joint;
     private Vector3 currentGrapplePosition;
+    private bool isGrappling = false;
 
     void Awake() {
         lineRenderer = GetComponent<LineRenderer>();
@@ -35,33 +35,25 @@ public class Grapple : MonoBehaviour
         //if (Physics.Raycast(camera2.position, camera2.forward, out hit, maxDistance, whatIsGrappleable)) {
         if (Physics.Raycast(gunTip.position, gunTip.forward, out hit, maxDistance, whatIsGrappleable)) {
             grapplePoint = hit.point;
-            //joint = player.gameObject.AddComponent<SpringJoint>();
-            joint = rigidBody.gameObject.AddComponent<SpringJoint>();
-            joint.autoConfigureConnectedAnchor = false;
-            joint.connectedAnchor = grapplePoint;
+            isGrappling = true;
 
-            //float distanceFromPoint = Vector3.Distance(player.position, grapplePoint);
-            float distanceFromPoint = Vector3.Distance(rigidBody.position, grapplePoint);
-            joint.maxDistance = distanceFromPoint * 0.8f;
-            joint.minDistance = distanceFromPoint * 0.25f;
-            joint.spring = 4.5f;
-            joint.damper = 7f;
-            joint.massScale = 4.5f;
+            float distanceFromPoint = Vector3.Distance(player.position, grapplePoint);
 
             lineRenderer.positionCount = 2;
             currentGrapplePosition = gunTip.position;
         }
     }
 
-    void DrawRope() {
-        if (!joint) return;
+     void DrawRope() {
+        //if (!joint) return;
         currentGrapplePosition = Vector3.Lerp(currentGrapplePosition, grapplePoint, Time.deltaTime * 8f);
         lineRenderer.SetPosition(0, gunTip.position);
         lineRenderer.SetPosition(1, grapplePoint);
     }
 
     public bool IsGrappling() {
-        return joint != null;
+        return isGrappling;
+        //return joint != null;
     }
 
     public Vector3 GetGrapplePoint() {
@@ -69,7 +61,8 @@ public class Grapple : MonoBehaviour
     }
 
     void StopGrapple() {
+        isGrappling = false;
         lineRenderer.positionCount = 0;
-        Destroy(joint);
+        //Destroy(joint);
     }
 }

@@ -57,7 +57,7 @@ public class Enemy : MonoBehaviour
             agent.SetDestination(target.position);
         }
         if (distance <= contactRadius && !hasContacted) {
-            FindObjectOfType<AudioManager>().Play("Death1");
+            //FindObjectOfType<AudioManager>().Play("Death1");
             hasContacted = true;
             PlayerManager.instance.player.GetComponent<Player2>().TakeDamage();
         }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerKinematic : MonoBehaviour
 {
     public int health = 3;
     [SerializeField]
@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         rig = GetComponent<Rigidbody>();
-        //rig.isKinematic = true;
+        rig.isKinematic = true;
         audioManager = FindObjectOfType<AudioManager>();
         directions = new Vector3[] { 
             //Vector3.right, 
@@ -63,13 +63,14 @@ public class Player : MonoBehaviour
             //Vector3.left
         };
     }
-    
-    /*void FixedUpdate()
-    {
-        Move();
-    }*/
 
-    void Update()
+    void FixedUpdate()
+    {
+        Move2();
+        //Move();
+    }
+
+    /*void Update()
     {
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
@@ -78,7 +79,7 @@ public class Player : MonoBehaviour
         Vector3 direction = transform.right * x + transform.forward * z;
 
         /*if (Input.GetButtonDown("Jump"))
-            Jump();*/
+            Jump();
 
         canWallClimb = false;
         hits = new RaycastHit[directions.Length];
@@ -158,14 +159,14 @@ public class Player : MonoBehaviour
                 if (distanceTravelled >= wallDeattachDistance) {
                     distanceTravelled = 0f;
                     isWallClimbing = false;
-                }*/
+                }
             } else {
                 rig.AddForce(Vector3.up * wallClimbSpeed * Time.deltaTime, ForceMode.Impulse);
             }
         } else {
             Move();
         }
-    }
+    }*/
 
     void Move()
     {
@@ -177,6 +178,15 @@ public class Player : MonoBehaviour
         direction.y = rig.velocity.y;
 
         rig.velocity = direction;
+    }
+
+    void Move2()
+    {
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+
+        Vector3 direction = transform.right * x + transform.forward * z;
+        rig.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
     }
 
     void Jump()

@@ -5,7 +5,9 @@ using UnityEngine;
 public class Player2 : MonoBehaviour
 {
     [SerializeField]
+    private GameObject spawnPoint;
     public int health = 3;
+    public int pickups = 0;
     [SerializeField]
     private float moveSpeed = 8f;
     [SerializeField]
@@ -27,6 +29,7 @@ public class Player2 : MonoBehaviour
     [SerializeField]
     private float slideSpeed = 32f;
     private CharacterController controller;
+    private AudioManager audioManager;
     private float directionY;
     private float jumpTime = 0f;
     private float dashTime = 0f;
@@ -39,6 +42,7 @@ public class Player2 : MonoBehaviour
     private bool isDashing = false;
     private bool isSliding = false;
     private bool isWallClimbing = false;
+    private bool hasSpawned = true;
     [SerializeField]
     private float maxWallDistance = 1f;
     [SerializeField]
@@ -46,6 +50,8 @@ public class Player2 : MonoBehaviour
     private float distanceTravelled = 0f;
     [SerializeField]
     private float pushSpeed = 5f;
+    [SerializeField]
+    private float grappleSpeed = 4f;
     Vector3[] directions;
     RaycastHit[] hits;
 
@@ -53,6 +59,7 @@ public class Player2 : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        audioManager = FindObjectOfType<AudioManager>();
         directions = new Vector3[] { 
             //Vector3.right, 
             //Vector3.right + Vector3.forward,
@@ -60,11 +67,16 @@ public class Player2 : MonoBehaviour
             //Vector3.left + Vector3.forward, 
             //Vector3.left
         };
+        //StartCoroutine(WaitForLoad());
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!hasSpawned) {
+            return;
+        }
+
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
@@ -94,10 +106,10 @@ public class Player2 : MonoBehaviour
                 directionY = jumpSpeed;
                 canSlide = true;
                 isJumping = true;
-                FindObjectOfType<AudioManager>().Play("Jump1");
+                audioManager.Play("Jump1");
             } else if (Input.GetKeyDown(KeyCode.LeftShift) && canSlide) {
                 isSliding = true;
-                FindObjectOfType<AudioManager>().Play("Slide1");
+                audioManager.Play("Slide1");
             } else {
                 isJumping = false;
             }
@@ -110,19 +122,26 @@ public class Player2 : MonoBehaviour
             if (Input.GetButtonDown("Jump") && canDoubleJump) {
                 directionY = jumpSpeed * doubleJumpMultiplier;
                 canDoubleJump = false;
-                FindObjectOfType<AudioManager>().Play("DoubleJump1");
+                audioManager.Play("DoubleJump1");
             } else if (Input.GetKeyDown(KeyCode.LeftShift) && canAirDash) {
                 isDashing = true;
-                FindObjectOfType<AudioManager>().Play("AirDash1");
+                audioManager.Play("AirDash1");
             } else if (Input.GetKeyDown(KeyCode.LeftControl)) {
                 directionY -= gravity;
-                FindObjectOfType<AudioManager>().Play("GroundPound1");
+                audioManager.Play("GroundPound1");
             } else {
                 directionY -= gravity * Time.deltaTime;
             }
         }
 
-        if (isDashing) {
+        if (GameObject.Find("Gun").GetComponent<Grapple2>().IsGrappling()) {
+            // grapple towards point
+            //direction = GameObject.Find("Gun").GetComponent<Grapple2>().GetGrapplePoint() - transform.position;
+
+            direction = GameObject.Find("Gun").GetComponent<Grapple>().rigidBody.transform.position;
+            //direction = Vector3.MoveTowards(transform.position, GameObject.Find("Gun").GetComponent<Grapple2>().GetGrapplePoint(), 2f);
+            controller.Move(direction * grappleSpeed * Time.deltaTime);
+        } else if (isDashing) {
             controller.Move(direction * dashSpeed * Time.deltaTime);
             dashTime += Time.deltaTime;
             if (dashTime >= maxDashTime) {
@@ -163,11 +182,33 @@ public class Player2 : MonoBehaviour
     public void TakeDamage() {
         if (health > 0) {
             health -= 1;
+            if (health == 0) {
+                hasSpawned = false;
+                audioManager.Play("Destroyed1");
+                Debug.Log("Respawn");
+                //transform.position = spawnPoint.transform.position;
+                transform.SetPositionAndRotation(spawnPoint.transform.position, spawnPoint.transform.rotation);
+                health = 3;
+                StartCoroutine(WaitForLoad());
+            } else {
+                audioManager.Play("Death1");
+            }
             Debug.Log("Health = " + health.ToString());
             GameObject.Find("Health").GetComponent<HealthBar>().UpdateHealth();
-        } else {
-
         }
+    }
+
+    public void GetPickup() {
+        pickups++;
+        GameObject.Find("Pickups").GetComponent<PickupUI>().UpdatePickups();
+        audioManager.Play("Pickup1");
+    }
+
+    public void Spawn() {
+        hasSpawned = false;
+        Debug.Log("Respawn");
+        transform.SetPositionAndRotation(spawnPoint.transform.position, spawnPoint.transform.rotation);
+        StartCoroutine(WaitForLoad());
     }
 
     bool canAttach() {
@@ -184,6 +225,11 @@ public class Player2 : MonoBehaviour
 
     bool canAttach2() {
         return true;
+    }
+
+    IEnumerator WaitForLoad() {
+        yield return new WaitForSeconds(0.25f);
+        hasSpawned = true;
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit) {

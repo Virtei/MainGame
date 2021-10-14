@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grapple : MonoBehaviour
+public class GrappleOriginal : MonoBehaviour
 {
     private LineRenderer lineRenderer;
     private Vector3 grapplePoint;
     public LayerMask whatIsGrappleable;
-    public Transform gunTip, camera2, rigidBody, player;
+    public Transform gunTip, camera2, player;
     private float maxDistance = 100f;
     private SpringJoint joint;
     private Vector3 currentGrapplePosition;
@@ -35,13 +35,12 @@ public class Grapple : MonoBehaviour
         //if (Physics.Raycast(camera2.position, camera2.forward, out hit, maxDistance, whatIsGrappleable)) {
         if (Physics.Raycast(gunTip.position, gunTip.forward, out hit, maxDistance, whatIsGrappleable)) {
             grapplePoint = hit.point;
-            //joint = player.gameObject.AddComponent<SpringJoint>();
-            joint = rigidBody.gameObject.AddComponent<SpringJoint>();
+            joint = player.gameObject.AddComponent<SpringJoint>();
             joint.autoConfigureConnectedAnchor = false;
             joint.connectedAnchor = grapplePoint;
 
-            //float distanceFromPoint = Vector3.Distance(player.position, grapplePoint);
-            float distanceFromPoint = Vector3.Distance(rigidBody.position, grapplePoint);
+            float distanceFromPoint = Vector3.Distance(player.position, grapplePoint);
+            
             joint.maxDistance = distanceFromPoint * 0.8f;
             joint.minDistance = distanceFromPoint * 0.25f;
             joint.spring = 4.5f;
