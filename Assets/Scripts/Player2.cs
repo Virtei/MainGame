@@ -14,10 +14,16 @@ public class Player2 : MonoBehaviour
     private float wallClimbSpeed = 8f;
     [SerializeField]
     private float gravity = 9.81f;
+    private float gravity2;
+    [SerializeField]
+    private float fallMultiplier = 2f;
     [SerializeField]
     private float jumpSpeed = 2.5f;
+    private float initialJumpVelocity;
     [SerializeField]
     private float dashSpeed = 32f;
+    [SerializeField]
+    private float maxJumpHeight = 1f;
     [SerializeField]
     private float maxJumpTime = 0.5f;
     [SerializeField]
@@ -39,6 +45,7 @@ public class Player2 : MonoBehaviour
     private bool canSlide = true;
     private bool canWallClimb = false;
     private bool isJumping = false;
+    private bool isFalling = false;
     private bool isDashing = false;
     private bool isSliding = false;
     private bool isWallClimbing = false;
@@ -68,6 +75,8 @@ public class Player2 : MonoBehaviour
             //Vector3.left
         };
         //StartCoroutine(WaitForLoad());
+        gravity2 = (-2 * maxJumpHeight) / Mathf.Pow(maxJumpTime / 2, 2);
+        initialJumpVelocity = (2 * maxJumpHeight) / (maxJumpTime / 2);
     }
 
     // Update is called once per frame
@@ -104,6 +113,7 @@ public class Player2 : MonoBehaviour
             canAirDash = true;
             if (Input.GetButtonDown("Jump")) {
                 directionY = jumpSpeed;
+                //directionY = initialJumpVelocity;
                 canSlide = true;
                 isJumping = true;
                 audioManager.Play("Jump1");
@@ -114,13 +124,16 @@ public class Player2 : MonoBehaviour
                 isJumping = false;
             }
         } else {
-            if (canWallClimb) {
+            //if (canWallClimb) {
+            //if (canWallClimb && Input.GetAxis("Vertical") > 0) {
+            if (canWallClimb && Input.GetKey(KeyCode.W)) {
                 isWallClimbing = true;
             } else {
                 //isWallClimbing = false;
             }
             if (Input.GetButtonDown("Jump") && canDoubleJump) {
                 directionY = jumpSpeed * doubleJumpMultiplier;
+                //directionY = initialJumpVelocity * doubleJumpMultiplier;
                 canDoubleJump = false;
                 audioManager.Play("DoubleJump1");
             } else if (Input.GetKeyDown(KeyCode.LeftShift) && canAirDash) {
@@ -160,7 +173,9 @@ public class Player2 : MonoBehaviour
         } else if (isWallClimbing) {
             //Vector3 lastPosition = transform.position;
             //controller.Move(Vector3.up * wallClimbSpeed * Time.deltaTime);
-            if (!canWallClimb) {
+            if (!Input.GetKey(KeyCode.W)) {
+                isWallClimbing = false;
+            } else if (!canWallClimb) {
                 controller.Move(Vector3.up);
                 isWallClimbing = false;
                 /*distanceTravelled += Vector3.Distance(lastPosition, transform.position);

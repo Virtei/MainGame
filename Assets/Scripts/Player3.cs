@@ -5,11 +5,16 @@ using UnityEngine;
 public class Player3 : MonoBehaviour
 {
     enum State {
+        Spawning,
         Grounded,
         Jumping,
         DoubleJumping,
         Falling,
-        Dashing
+        Dashing,
+        Sliding,
+        GroundPounding,
+        Climbing,
+        Grappling
     }
     private State currentState;
     [SerializeField]
