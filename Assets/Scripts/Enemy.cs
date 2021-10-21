@@ -104,10 +104,27 @@ public class Enemy : MonoBehaviour
         agent.destination = points[previousPoint].position;
     }
 
+    void OnDrawGizmos() {
+        if (points.Length == 0) {
+            return;
+        }
+        
+        Gizmos.color = Color.red;
+        int previous = points.Length - 1;
+        foreach (Transform transform in points) {
+            Gizmos.DrawWireCube(transform.position, new Vector3(1, 1, 1));
+            Gizmos.DrawLine(points[previous].position, transform.position);
+
+            previous = (previous + 1) % points.Length;
+        }
+    }
+
     void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, lookRadius);
         Gizmos.DrawWireSphere(transform.position, contactRadius);
+        //Gizmos.DrawRay(transform.position, agent.destination);
+        Gizmos.DrawLine(transform.position, agent.destination);
     }
 
     void OnCollisionEnter(Collision collision) {
