@@ -12,11 +12,13 @@ public class MovingPlatform : MonoBehaviour
     private float tolerance;
     public Transform[] points;
     private int destinationPoint = 0;
+    private GameObject map;
 
     // Start is called before the first frame update
     void Start()
     {
         tolerance = speed * Time.deltaTime;
+        map = GameObject.Find("Map");
     }
 
     // Update is called once per frame
@@ -41,11 +43,23 @@ public class MovingPlatform : MonoBehaviour
         if (other.Equals(PlayerManager.instance.player.GetComponent<Collider>())) {
             PlayerManager.instance.player.transform.parent = transform;
         }
+        if (other.CompareTag($"MovableObject")) {
+            if (other.attachedRigidbody == null) {
+                return;
+            }
+            other.gameObject.transform.parent = transform;
+        }
     }
 
     private void OnTriggerExit(Collider other) {
         if (other.Equals(PlayerManager.instance.player.GetComponent<Collider>())) {
             PlayerManager.instance.player.transform.parent = null;
+        }
+        if (other.CompareTag("MovableObject")) {
+            if (other.attachedRigidbody == null) {
+                return;
+            }
+            other.gameObject.transform.parent = map.transform;
         }
     }
 
