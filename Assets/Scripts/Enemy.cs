@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
     private bool isAlerted = false;
     Transform target;
     NavMeshAgent agent;
-    public Transform[] points;
+    public Vector3[] points;
     private int destinationPoint = 0;
     private int previousPoint;
 
@@ -91,7 +91,7 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        agent.destination = points[destinationPoint].position;
+        agent.destination = points[destinationPoint];
         previousPoint = destinationPoint;
         destinationPoint = (destinationPoint + 1) % points.Length;
     }
@@ -101,7 +101,7 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        agent.destination = points[previousPoint].position;
+        agent.destination = points[previousPoint];
     }
 
     void OnDrawGizmos() {
@@ -111,9 +111,9 @@ public class Enemy : MonoBehaviour
         
         Gizmos.color = Color.red;
         int previous = points.Length - 1;
-        foreach (Transform transform in points) {
-            Gizmos.DrawWireCube(transform.position, new Vector3(1, 1, 1));
-            Gizmos.DrawLine(points[previous].position, transform.position);
+        foreach (Vector3 position in points) {
+            Gizmos.DrawWireCube(position, new Vector3(1, 1, 1));
+            Gizmos.DrawLine(points[previous], position);
 
             previous = (previous + 1) % points.Length;
         }
