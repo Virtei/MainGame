@@ -226,6 +226,10 @@ public class Player2 : MonoBehaviour
         StartCoroutine(WaitForLoad());
     }
 
+    public void SlowFall() {
+        StartCoroutine(ChangeGravity(gravity / 2));
+    }
+
     bool canAttach() {
         if (isJumping) {
             jumpTime += Time.deltaTime;
@@ -245,6 +249,13 @@ public class Player2 : MonoBehaviour
     IEnumerator WaitForLoad() {
         yield return new WaitForSeconds(0.25f);
         hasSpawned = true;
+    }
+
+    IEnumerator ChangeGravity(float newGravity) {
+        float oldGravity = gravity;
+        gravity = newGravity;
+        yield return new WaitForSeconds(2f);
+        gravity = oldGravity;
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit) {
