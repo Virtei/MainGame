@@ -8,6 +8,7 @@ public class Player2 : MonoBehaviour
     private GameObject spawnPoint;
     public int health = 3;
     public int pickups = 0;
+    public int totalPickups {get; set;}
     [SerializeField]
     private float moveSpeed = 8f;
     [SerializeField]

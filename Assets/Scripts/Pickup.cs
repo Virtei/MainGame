@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
+    void Start() {
+        PlayerManager.instance.player.GetComponent<Player2>().totalPickups += 1;
+        GameObject.Find("Pickups").GetComponent<PickupUI>().UpdateTotalPickups();
+    }
+
     // Update is called once per frame
     void Update()
     {
