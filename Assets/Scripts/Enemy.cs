@@ -6,9 +6,16 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
+    private NavMeshAgent agent;
+    [SerializeField]
     private float lookRadius = 10f;
     [SerializeField]
-    private float contactRadius = 1f;
+    [Range(0, 360)]
+    private float lookAngle = 210f;
+    [SerializeField]
+    private float lookHeight = 5f;
+    [SerializeField]
+    private float contactRadius = 2f;
     private bool hasContacted = false;
     [SerializeField]
     private float invulnerabilityPeriod = 2f;
@@ -17,8 +24,7 @@ public class Enemy : MonoBehaviour
     private float timeSinceDamage = 0f;
     private float timeSinceAlerted = 0f;
     private bool isAlerted = false;
-    Transform target;
-    NavMeshAgent agent;
+    private Transform target;
     public Vector3[] points;
     private int destinationPoint = 0;
     private int previousPoint;
@@ -27,8 +33,9 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         target = PlayerManager.instance.player.transform;
-        agent = GetComponent<NavMeshAgent>();
+        //agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = false;
+        //agent.enabled = false;
         if (points.Length != 0) {
             previousPoint = points.Length - 1;
         }
@@ -53,8 +60,22 @@ public class Enemy : MonoBehaviour
             }
         }
         if (distance <= lookRadius) {
-            isAlerted = true;
-            agent.SetDestination(target.position);
+            //Quaternion look = Quaternion.LookRotation(transform.position - target.position).normalized;
+            //float dotProduct = Vector2.Dot(transform.right, look.eulerAngles);
+            Vector3 look = (target.position - transform.position).normalized;
+            float dotProduct = Vector3.Dot(look, transform.forward);
+            float dotLimit = Mathf.Cos(lookAngle / 2 * Mathf.Deg2Rad);
+
+            //Debug.Log("Dot: " + Mathf.Acos(dotProduct) * Mathf.Rad2Deg);
+            //Debug.Log("DotLimit: " + Mathf.Acos(dotLimit) * Mathf.Rad2Deg);
+            //Debug.Log("DotLimit: " + dotLimit);
+            if (dotProduct > dotLimit) {
+                //Debug.Log("Can see");
+                isAlerted = true;
+                agent.SetDestination(target.position);
+            } else {
+                //Debug.Log("Can't see");
+            }
         }
         if (distance <= contactRadius && !hasContacted) {
             //FindObjectOfType<AudioManager>().Play("Death1");
@@ -104,6 +125,14 @@ public class Enemy : MonoBehaviour
         agent.destination = points[previousPoint];
     }
 
+    public float GetLookRadius() {
+        return lookRadius;
+    }
+
+    public float GetLookAngle() {
+        return lookAngle;
+    }
+
     void OnDrawGizmos() {
         if (points.Length == 0) {
             return;
@@ -121,6 +150,17 @@ public class Enemy : MonoBehaviour
 
     void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
+
+        float halfFov = lookAngle / 2f;
+        Quaternion leftRayRotation = Quaternion.AngleAxis(-halfFov, Vector3.up);
+        Quaternion rightRayRotation = Quaternion.AngleAxis(halfFov, Vector3.up);
+        Vector3 leftRayDirection = leftRayRotation * transform.forward;
+        Vector3 rightRayDirection = rightRayRotation * transform.forward;
+
+        Gizmos.DrawRay(transform.position, leftRayDirection * lookRadius);
+        Gizmos.DrawRay(transform.position, rightRayDirection * lookRadius);
+        //Gizmos.DrawLine(transform.position + leftRayDirection * lookRadius, transform.position + rightRayDirection * lookRadius);
+
         Gizmos.DrawWireSphere(transform.position, lookRadius);
         Gizmos.DrawWireSphere(transform.position, contactRadius);
         //Gizmos.DrawRay(transform.position, agent.destination);
