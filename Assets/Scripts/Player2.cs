@@ -6,6 +6,10 @@ public class Player2 : MonoBehaviour
 {
     [SerializeField]
     private GameObject spawnPoint;
+    [SerializeField]
+    private ParticleSystem jumpParticleSys;
+    [SerializeField]
+    private ParticleSystem airDashParticleSys;
     public int health = 3;
     public int pickups = 0;
     public int totalPickups {get; set;}
@@ -68,6 +72,9 @@ public class Player2 : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         audioManager = FindObjectOfType<AudioManager>();
+        //particleSys = GetComponentInChildren<ParticleSystem>();
+        jumpParticleSys.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        airDashParticleSys.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         directions = new Vector3[] { 
             //Vector3.right, 
             //Vector3.right + Vector3.forward,
@@ -118,17 +125,20 @@ public class Player2 : MonoBehaviour
                 canSlide = true;
                 isJumping = true;
                 audioManager.Play("Jump1");
+                jumpParticleSys.Play();
             } else if (Input.GetKeyDown(KeyCode.LeftShift) && canSlide) {
                 isSliding = true;
                 audioManager.Play("Slide1");
             } else {
                 isJumping = false;
+                jumpParticleSys.Stop(true, ParticleSystemStopBehavior.StopEmitting);
             }
         } else {
             //if (canWallClimb) {
             //if (canWallClimb && Input.GetAxis("Vertical") > 0) {
             if (canWallClimb && Input.GetKey(KeyCode.W)) {
                 isWallClimbing = true;
+                jumpParticleSys.Stop(true, ParticleSystemStopBehavior.StopEmitting);
             } else {
                 //isWallClimbing = false;
             }
@@ -137,9 +147,11 @@ public class Player2 : MonoBehaviour
                 //directionY = initialJumpVelocity * doubleJumpMultiplier;
                 canDoubleJump = false;
                 audioManager.Play("DoubleJump1");
+                jumpParticleSys.Play();
             } else if (Input.GetKeyDown(KeyCode.LeftShift) && canAirDash) {
                 isDashing = true;
                 audioManager.Play("AirDash1");
+                airDashParticleSys.Play();
             } else if (Input.GetKeyDown(KeyCode.LeftControl)) {
                 directionY -= gravity;
                 audioManager.Play("GroundPound1");
@@ -162,6 +174,7 @@ public class Player2 : MonoBehaviour
                 dashTime = 0f;
                 canAirDash = false;
                 isDashing = false;
+                airDashParticleSys.Stop(true, ParticleSystemStopBehavior.StopEmitting);
             }
         } else if (isSliding) {
             controller.Move(direction * slideSpeed * Time.deltaTime);
@@ -257,6 +270,12 @@ public class Player2 : MonoBehaviour
         gravity = newGravity;
         yield return new WaitForSeconds(2f);
         gravity = oldGravity;
+    }
+
+    IEnumerator EmitParticles() {
+        jumpParticleSys.Play();
+        yield return new WaitForSeconds(2f);
+        jumpParticleSys.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit) {
