@@ -265,6 +265,11 @@ public class Player2 : MonoBehaviour
         hasSpawned = true;
     }
 
+    IEnumerator WaitForSlide() {
+        yield return new WaitForSeconds(2f);
+        canSlide = true;
+    }
+
     IEnumerator ChangeGravity(float newGravity) {
         float oldGravity = gravity;
         gravity = newGravity;

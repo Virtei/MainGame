@@ -35,6 +35,7 @@ public class Enemy : MonoBehaviour
         target = PlayerManager.instance.player.transform;
         //agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = false;
+        //agent.autoTraverseOffMeshLink = false;
         //agent.enabled = false;
         if (points.Length != 0) {
             previousPoint = points.Length - 1;
@@ -45,6 +46,9 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (agent.isOnOffMeshLink) {
+            StartCoroutine(Jump(2.0f, 1.0f));
+        }
         float distance = Vector3.Distance(target.position, transform.position);
         if (!isAlerted) {
             if (!agent.pathPending && agent.remainingDistance < 0.5f) {
@@ -123,6 +127,19 @@ public class Enemy : MonoBehaviour
         }
 
         agent.destination = points[previousPoint];
+    }
+
+    IEnumerator Jump(float height, float duration) {
+        OffMeshLinkData data = agent.currentOffMeshLinkData;
+        Vector3 startPos = agent.transform.position;
+        Vector3 endPos = data.endPos + Vector3.up * agent.baseOffset;
+        float normalizedTime = 0.0f;
+        while (normalizedTime < 1.0f) {
+            float yOffset = height * 4.0f * (normalizedTime - normalizedTime * normalizedTime);
+            agent.transform.position = Vector3.Lerp(startPos, endPos, normalizedTime) + yOffset * Vector3.up;
+            normalizedTime += Time.deltaTime / duration;
+            yield return null;
+        }
     }
 
     public float GetLookRadius() {
