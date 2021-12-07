@@ -74,11 +74,11 @@ public class Enemy : MonoBehaviour
             //Debug.Log("DotLimit: " + Mathf.Acos(dotLimit) * Mathf.Rad2Deg);
             //Debug.Log("DotLimit: " + dotLimit);
             if (dotProduct > dotLimit) {
-                //Debug.Log("Can see");
+                Debug.Log("Can see");
                 isAlerted = true;
                 agent.SetDestination(target.position);
             } else {
-                //Debug.Log("Can't see");
+                Debug.Log("Can't see");
             }
         }
         if (distance <= contactRadius && !hasContacted) {

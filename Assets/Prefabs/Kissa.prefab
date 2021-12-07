@@ -621,7 +621,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5364830798649084105}
-  - component: {fileID: 4598003607473790720}
+  - component: {fileID: -3734656829151664799}
+  - component: {fileID: 6244966574627942957}
+  - component: {fileID: 1599926624477618630}
   m_Layer: 0
   m_Name: Kissa
   m_TagString: Untagged
@@ -638,15 +640,61 @@ Transform:
   m_GameObject: {fileID: 3632904357236427923}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1.16, y: 1.16, z: 1.16}
   m_Children:
   - {fileID: 1238816282584636700}
   - {fileID: 9039594272759915957}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &4598003607473790720
-MeshCollider:
+--- !u!114 &-3734656829151664799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3632904357236427923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0311ec1a4968a0d4e85c1ee780837826, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 6244966574627942957}
+  lookRadius: 100
+  lookAngle: 181
+  lookHeight: 5
+  contactRadius: 10.2
+  invulnerabilityPeriod: 2
+  returnToPatrolPeriod: 5
+  points:
+  - {x: -45.17, y: 0, z: -60.8}
+  - {x: -59.8, y: 0, z: 78.4}
+  - {x: 55.3, y: 0, z: 58.7}
+  - {x: 66.3, y: 0, z: -54.7}
+--- !u!195 &6244966574627942957
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3632904357236427923}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 4
+  m_Speed: 8
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 3.6
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!136 &1599926624477618630
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -655,10 +703,10 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  m_Radius: 4.9524326
+  m_Height: 17.749184
+  m_Direction: 2
+  m_Center: {x: 0.3, y: 4.54, z: 0}
 --- !u!1001 &1638063027600243447
 PrefabInstance:
   m_ObjectHideFlags: 0
