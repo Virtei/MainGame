@@ -13,9 +13,6 @@ ModelImporter:
       74: 1267437194353208436
     second: metarig.001|Empty.005Action
   - first:
-      74: -3230838195879605057
-    second: metarig.001|Empty.005Action.001
-  - first:
       74: -3773528098017054933
     second: metarig.001|metarig.001Action
   - first:
@@ -36,9 +33,6 @@ ModelImporter:
   - first:
       74: 820440653787770127
     second: Empty.003|Empty.005Action
-  - first:
-      74: 4268871259683867014
-    second: Empty.003|Empty.005Action.001
   - first:
       74: 2647603116761159697
     second: Empty.003|Empty.005Action.002
@@ -64,9 +58,6 @@ ModelImporter:
       74: 8996050264481459242
     second: Empty.001|Empty.005Action
   - first:
-      74: 7185524144204074740
-    second: Empty.001|Empty.005Action.001
-  - first:
       74: -2476394532478516861
     second: Empty.001|Empty.005Action.002
   - first:
@@ -90,9 +81,6 @@ ModelImporter:
   - first:
       74: -2526419596023260297
     second: Empty.004|Empty.005Action
-  - first:
-      74: -2467946127043858001
-    second: Empty.004|Empty.005Action.001
   - first:
       74: -285312643895539654
     second: Empty.004|Empty.005Action.002
@@ -118,29 +106,11 @@ ModelImporter:
       74: 2006306434847807493
     second: Empty.005|Empty.005Action
   - first:
-      74: -7309535123462438281
-    second: Empty.005|Empty.005Action.001
-  - first:
       74: -2824982232645047134
     second: Empty.005|Empty.005Action.002
   - first:
       74: 1055662727875119648
     second: Empty.005|metarig.001Action
-  - first:
-      74: -1312263404194804910
-    second: NurbsPath|Action
-  - first:
-      74: -1654228497857746655
-    second: NurbsPath|Empty.003Action
-  - first:
-      74: -6273634418188725937
-    second: NurbsPath|Empty.005Action
-  - first:
-      74: -8434659116869720794
-    second: NurbsPath|Empty.005Action.001
-  - first:
-      74: 2950823993383102523
-    second: NurbsPath|metarig.001Action
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -232,7 +202,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   additionalBone: 0
   userData: 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,7 @@ public class Enemy : MonoBehaviour
     public Vector3[] points;
     private int destinationPoint = 0;
     private int previousPoint;
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +43,7 @@ public class Enemy : MonoBehaviour
             previousPoint = points.Length - 1;
         }
         GotoNextPoint();
+        anim = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -109,6 +112,16 @@ public class Enemy : MonoBehaviour
                 hasContacted = false;
             }
         }*/
+
+        if (Math.Abs(agent.velocity.x) > 0.5f || Math.Abs(agent.velocity.z) > 0.5f)
+        {
+            anim.Play("Run");
+            Debug.Log(agent.velocity);
+        }
+        else
+        {
+            anim.Play("Idle");
+        }
     }
 
     void GotoNextPoint() {

@@ -67,11 +67,15 @@ public class Player2 : MonoBehaviour
     Vector3[] directions;
     RaycastHit[] hits;
 
+    private Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
         audioManager = FindObjectOfType<AudioManager>();
+        anim = GetComponentInChildren<Animator>();
+        
         //particleSys = GetComponentInChildren<ParticleSystem>();
         jumpParticleSys.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         airDashParticleSys.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
@@ -205,6 +209,16 @@ public class Player2 : MonoBehaviour
             direction.y = directionY;
 
             controller.Move(direction * moveSpeed * Time.deltaTime);
+        }
+        
+        // play walk animation when there is some movement input
+        if (x != 0f || z != 0f)
+        {
+            anim.Play("Walk");
+        }
+        else
+        {
+            anim.Play("Idle");
         }
     }
     
